@@ -1,24 +1,25 @@
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import AllMetupsPage from "./pages/AllMetups";
 import NewMeetupPage from "./pages/NewMeetup";
 import FavoritesPage from "./pages/Favorites";
-import MainNaviation from "./components/layout/MainNavigation";
+import Layout from "./components/layout/Layout";
 
 function App() {
   return (
-    <div>
-      <MainNaviation />
-      <Route path="/" exact>
-        <AllMetupsPage />
-      </Route>
-      <Route path="/new-meetup">
-        <NewMeetupPage />
-      </Route>
-      <Route path="/favorites">
-        <FavoritesPage />
-      </Route>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path="/" exact>
+          <AllMetupsPage />
+        </Route>
+        <Route path="/new-meetup">
+          <NewMeetupPage />
+        </Route>
+        <Route path="/favorites">
+          <FavoritesPage />
+        </Route>
+      </Switch>
+    </Layout>
   );
 }
 
