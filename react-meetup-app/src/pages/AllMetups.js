@@ -31,19 +31,19 @@ function AllMetupsPage() {
       });
   }, []);
 
-  if (isLoading) {
-    return (
-      <section>
-        <p>Loading...</p>
-      </section>
-    );
-  }
-
   return (
-    <section>
-      <h1>All Meetups</h1>
-      <MeetupList meetups={loadedMeetups} />
-    </section>
+    <div>
+      {isLoading ? (
+        <section>
+          <p>Loading...</p>
+        </section>
+      ) : (
+        <section>
+          <h1>All Meetups</h1>
+          <MeetupList meetups={loadedMeetups} />
+        </section>
+      )}
+    </div>
   );
 }
 

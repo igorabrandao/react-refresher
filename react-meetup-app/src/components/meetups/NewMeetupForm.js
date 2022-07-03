@@ -22,6 +22,7 @@ function NewMeetupForm(props) {
         image: enteredImage,
         address: enteredAddress,
         description: enteredDescription,
+        isFavorite: 0,
     };
 
     props.onAddMeetup(meetupData);
