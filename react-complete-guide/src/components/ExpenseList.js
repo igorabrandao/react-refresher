@@ -1,8 +1,9 @@
 import ExpenseItem from "./ExpenseItem";
+import './ExpenseList.css'
 
 function ExpenseList(props) {
   return (
-    <div className="expense-list">
+    <div className="expenses">
       {props.expenses.map((expense) => (
         <ExpenseItem
           key={expense.id}
