@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "./ExpenseForm.css";
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
   const [userInput, setUserInput] = useState({
     enteredTitle: "",
     enteredAmount: "",
@@ -27,8 +27,30 @@ const ExpenseForm = () => {
     });
   };
 
+  const submitHandler = (event) => {
+    // Prevent the default behavior of the form
+    event.preventDefault();
+
+    // Create an object with the expense form data
+    const expenseData = {
+      title: userInput.enteredTitle,
+      amount: userInput.enteredAmount,
+      date: new Date(userInput.enteredDate),
+    };
+
+    // Pass the expense form data to the parent component (NewExpense.js)
+    props.onSaveExpenseData(expenseData);
+
+    // Clear the form
+    setUserInput({
+      enteredTitle: "",
+      enteredAmount: "",
+      enteredDate: "",
+    });
+  };
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
