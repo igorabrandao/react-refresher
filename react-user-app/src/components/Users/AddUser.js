@@ -51,7 +51,7 @@ const AddUser = (props) => {
     // Pass the form data to the parent component
     props.onAddUser(enteredName, enteredAge);
 
-    // Clear the form data
+    // Clear the form data (uncontrolled components)
     nameInputRef.current.value = "";
     ageInputRef.current.value = "";
   };
