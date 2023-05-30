@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div>
-      <AddUser onSubmit={addUserHandler} />
+      <AddUser onAddUser={addUserHandler} />
       <UsersList users={usersList} />
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import styles from "./AddUser.module.css";
@@ -42,7 +43,7 @@ const AddUser = (props) => {
     }
 
     // Pass the form data to the parent component
-    props.onSubmit(enteredUserData.username, enteredUserData.age);
+    props.onAddUser(enteredUserData.username, enteredUserData.age);
 
     // Reset the form
     setEnteredUserData({ username: "", age: "" });
