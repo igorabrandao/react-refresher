@@ -11,9 +11,18 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  useEffect(() => {
+    console.log("EFFECT RUNNING");
+
+    // Cleanup function just called after unmouting the component
+    return () => {
+      console.log("EFFECT CLEANUP");
+    };
+  }, []);
+
   // Execute in response to changes in enteredEmail and enteredPassword
   useEffect(() => {
-    // Delay the execution of the function by 500ms (debounce)
+    // Delay the execution of the function by 500ms (debouncer)
     const identifier = setTimeout(() => {
       console.log("Checking form validity!");
       setFormIsValid(
