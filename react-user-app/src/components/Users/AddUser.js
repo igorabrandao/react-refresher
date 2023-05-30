@@ -3,7 +3,7 @@ import Card from "../UI/Card";
 import Button from "../UI/Button";
 import styles from "./AddUser.module.css";
 
-const AddUser = () => {
+const AddUser = (props) => {
   const [enteredUserData, setEnteredUserData] = useState({
     username: "",
     age: "",
@@ -41,7 +41,8 @@ const AddUser = () => {
       return;
     }
 
-    console.log(enteredUserData);
+    // Pass the form data to the parent component
+    props.onSubmit(enteredUserData.username, enteredUserData.age);
 
     // Reset the form
     setEnteredUserData({ username: "", age: "" });
