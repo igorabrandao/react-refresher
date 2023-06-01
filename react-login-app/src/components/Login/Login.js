@@ -1,4 +1,10 @@
-import React, { useState, useReducer, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useReducer,
+  useEffect,
+  useContext,
+  useRef,
+} from "react";
 
 import AuthContext from "../../store/auth-context";
 import Card from "../UI/Card/Card";
@@ -34,7 +40,7 @@ const passwordReducer = (state, action) => {
   return { value: "", isValid: false };
 };
 
-const Login = (props) => {
+const Login = () => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -47,7 +53,12 @@ const Login = (props) => {
     isValid: null,
   });
 
+  // App context
   const authCtx = useContext(AuthContext);
+
+  // Form input references
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
 
   // Destructuring the state object
   const { isValid: emailIsValid } = emailState;
@@ -83,7 +94,14 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    authCtx.onLogin(emailState.value, passwordState.value);
+
+    if (formIsValid) {
+      authCtx.onLogin(emailState.value, passwordState.value);
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else {
+      passwordInputRef.current.focus();
+    }
   };
 
   return (
@@ -97,6 +115,7 @@ const Login = (props) => {
           isValid={emailIsValid}
           onChange={emailChangeHandler}
           onBlur={validateEmailHandler}
+          ref={emailInputRef}
         />
         <Input
           id="password"
@@ -106,9 +125,10 @@ const Login = (props) => {
           isValid={passwordIsValid}
           onChange={passwordChangeHandler}
           onBlur={validatePasswordHandler}
+          ref={passwordInputRef}
         />
         <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+          <Button type="submit" className={classes.btn}>
             Login
           </Button>
         </div>
