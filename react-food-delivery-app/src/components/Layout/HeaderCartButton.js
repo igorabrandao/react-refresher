@@ -1,5 +1,5 @@
-import styles from "./HeaderCartButton.module.css";
 import CartIcon from "../Cart/CartIcon";
+import styles from "./HeaderCartButton.module.css";
 
 const HeaderCartButton = (props) => {
   return (
