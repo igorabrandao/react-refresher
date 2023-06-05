@@ -9,12 +9,26 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    // Concatenate the new item with the existing items
-    const updatedItems = state.items.concat(action.item);
-
     // Calculate the new total amount
     const updatedTotalAmount =
-      state.totalAmount + action.item.price * action.item.amount;
+    state.totalAmount + action.item.price * action.item.amount;
+
+    // Check if the item already exists in the cart
+    const existingCartItemIndex = state.items.findIndex(item => item.id === action.item.id);
+    const existingCartItem = state.items[existingCartItemIndex];
+    let updatedItems;
+
+    // If the item already exists, update the amount
+    if (existingCartItem) {
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount,
+      };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+      updatedItems = state.items.concat(action.item);
+    }
 
     // Return the updated state
     return {
