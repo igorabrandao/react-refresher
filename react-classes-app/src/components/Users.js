@@ -3,12 +3,6 @@ import { Component } from "react";
 import User from "./User";
 import classes from "./Users.module.css";
 
-const DUMMY_USERS = [
-  { id: "u1", name: "Max" },
-  { id: "u2", name: "Manuel" },
-  { id: "u3", name: "Julie" },
-];
-
 class Users extends Component {
   constructor() {
     // Call the constructor of the Component class
@@ -20,6 +14,18 @@ class Users extends Component {
     };
   }
 
+  // Called once component is mounted, equivalent to useEffect(..., []);
+  componentDidMount() {}
+
+  // Called once component is updated, equivalent to useEffect(..., [someValue]);
+  componentDidUpdate() {}
+
+  /*
+   * Called right before component is unmounted, equivalent to useEffect(() => { return () => {...} }, []);
+   * Clean up function from useEffect
+   */
+  componentWillUnmount() {}
+
   toggleUsersHandler() {
     // this.state.showUsers = false; // NOT!
     this.setState((curState) => {
@@ -30,7 +36,7 @@ class Users extends Component {
   render() {
     const usersList = (
       <ul>
-        {DUMMY_USERS.map((user) => (
+        {this.props.users.map((user) => (
           <User key={user.id} name={user.name} />
         ))}
       </ul>
