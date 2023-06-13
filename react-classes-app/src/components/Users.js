@@ -14,18 +14,6 @@ class Users extends Component {
     };
   }
 
-  // Called once component is mounted, equivalent to useEffect(..., []);
-  componentDidMount() {}
-
-  // Called once component is updated, equivalent to useEffect(..., [someValue]);
-  componentDidUpdate() {}
-
-  /*
-   * Called right before component is unmounted, equivalent to useEffect(() => { return () => {...} }, []);
-   * Clean up function from useEffect
-   */
-  componentWillUnmount() {}
-
   toggleUsersHandler() {
     // this.state.showUsers = false; // NOT!
     this.setState((curState) => {
