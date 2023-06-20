@@ -10,9 +10,9 @@ const useHttpRequest = (requestConfig, applyData) => {
 
     try {
       const response = await fetch(requestConfig.url, {
-        method: requestConfig.method,
-        headers: requestConfig.headers,
-        body: JSON.stringify(requestConfig.body),
+        method: requestConfig.method ? requestConfig.method : "GET",
+        headers: requestConfig.headers ? requestConfig.headers : {},
+        body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
       });
 
       if (!response.ok) {
@@ -26,9 +26,9 @@ const useHttpRequest = (requestConfig, applyData) => {
     } finally {
       setIsLoading(false);
     }
-
-    return { isLoading, error, sendRequest };
   };
+
+  return { isLoading, error, sendRequest };
 };
 
 export default useHttpRequest;
