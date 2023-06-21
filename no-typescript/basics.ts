@@ -3,6 +3,7 @@
 // Function types, parameters
 
 // Primitive types
+// ========================================================
 let age: number = 24;
 age = 12.1;
 
@@ -14,6 +15,7 @@ let isInstructor: boolean;
 isInstructor = true;
 
 // More complex types
+// ========================================================
 let hobbies: string[]; // array of strings
 hobbies = ["Sports", "Cooking"];
 
@@ -42,3 +44,13 @@ let course2: string | number | boolean = "React - The Complete Guide";
 // course2 type is string or number
 course2 = 12341; // no error
 course2 = true; // no error
+
+// Functions & types
+// ========================================================
+function add(a: number, b: number) {
+  return a + b;
+}
+
+function printValue(value: any) {
+  console.log(value);
+}
