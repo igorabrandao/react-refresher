@@ -17,19 +17,16 @@ isInstructor = true;
 let hobbies: string[]; // array of strings
 hobbies = ["Sports", "Cooking"];
 
-let person: {
+type Person = {
   name: string;
   age: number;
   hobbies: string[];
 };
+
+let person: Person;
 person = { name: "User", age: 24, hobbies: ["Sports", "Cooking"] };
 
-let people: {
-  name: string;
-  age: number;
-  hobbies: string[];
-}[]; // array of person
-
+let people: Person[]; // array of person
 people = [
   { name: "User", age: 24, hobbies: ["Sports", "Cooking"] },
   { name: "User2", age: 35, hobbies: ["Running", "Reading"] },
