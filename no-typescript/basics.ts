@@ -72,3 +72,9 @@ console.log(updatedArray, stringArray, booleanArray);
 
 // With the generic type, we can use functions for specific types
 // stringArray[0].split(""); // no error
+
+// Classes & types (alternative way)
+// Note: Array is a generic type
+const newNumbers: Array<number> = [1, 2, 3];
+const newStrings: Array<string> = ["a", "b", "c"];
+const newBooleans: Array<boolean> = [true, false, false];
