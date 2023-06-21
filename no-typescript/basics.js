@@ -17,3 +17,10 @@ people = [
     { name: "User", age: 24, hobbies: ["Sports", "Cooking"] },
     { name: "User2", age: 35, hobbies: ["Running", "Reading"] },
 ];
+// Type inference (use it as much as possible)
+var course = "React - The Complete Guide";
+// course type is string
+// course = 12341; // error
+var course2 = "React - The Complete Guide";
+// course2 type is string or number
+course2 = 12341; // no error
