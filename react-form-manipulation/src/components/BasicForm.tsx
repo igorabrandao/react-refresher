@@ -34,7 +34,7 @@ const BasicForm: React.FC = (props) => {
     reset: resetEmailInput,
   } = useInput2(validateEmail);
 
-  // Chech the form overall validity
+  // Check the form overall validity
   let formIsValid = false;
 
   if (
@@ -45,7 +45,7 @@ const BasicForm: React.FC = (props) => {
     formIsValid = true;
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!formIsValid) {
@@ -60,12 +60,10 @@ const BasicForm: React.FC = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={submitHandler}>
       <div className="control-group">
         <div
-          className={
-            firstNameInputHasError ? "form-control invalid" : "form-control"
-          }
+          className={`form-control ${firstNameInputHasError ? "invalid" : ""}`}
         >
           <label htmlFor="first-name">First Name</label>
           <input
@@ -77,14 +75,12 @@ const BasicForm: React.FC = (props) => {
           />
           {firstNameInputHasError && (
             <p className="error-text">
-              First name must have at least 3 characters.
+              First name must have at least 3 characters
             </p>
           )}
         </div>
         <div
-          className={
-            lastNameInputHasError ? "form-control invalid" : "form-control"
-          }
+          className={`form-control ${lastNameInputHasError ? "invalid" : ""}`}
         >
           <label htmlFor="last-name">Last Name</label>
           <input
@@ -96,14 +92,12 @@ const BasicForm: React.FC = (props) => {
           />
           {lastNameInputHasError && (
             <p className="error-text">
-              Last name must have at least 3 characters.
+              Last name must have at least 3 characters
             </p>
           )}
         </div>
       </div>
-      <div
-        className={emailInputHasError ? "form-control invalid" : "form-control"}
-      >
+      <div className={`form-control ${emailInputHasError ? "invalid" : ""}`}>
         <label htmlFor="email">E-Mail Address</label>
         <input
           type="email"
@@ -114,7 +108,7 @@ const BasicForm: React.FC = (props) => {
         />
         {emailInputHasError && (
           <p className="error-text">
-            E-mail must contain "@" and a domain, e.g. ".com".
+            E-mail must contain "@" and a domain, e.g. ".com"
           </p>
         )}
       </div>
