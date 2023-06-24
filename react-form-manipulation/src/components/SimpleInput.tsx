@@ -25,6 +25,7 @@ const SimpleInput: React.FC = (props) => {
 
   let formIsValid = false;
 
+  // Validate the overall form
   if (enteredNameIsValid && enteredEmailIsValid) {
     formIsValid = true;
   }

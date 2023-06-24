@@ -10,3 +10,8 @@ export const validateEmail = (email: string) => {
    */
   return !!result;
 };
+
+export const validateName = (name: string) => {
+  const nameMinLength = 3;
+  return name.trim().length >= nameMinLength;
+};
