@@ -21,6 +21,15 @@ const SimpleInput: React.FC = (props) => {
     setEnteredName(event.target.value);
   };
 
+  const nameInputBlurHandler = () => {
+    setEnteredNameTouched(true);
+
+    if (enteredName.trim().length === 0) {
+      setEnteredNameIsValid(false);
+      return;
+    }
+  };
+
   const formSubmissionHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -55,6 +64,7 @@ const SimpleInput: React.FC = (props) => {
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
           value={enteredName}
         />
         {nameInputIsInvalid && (
