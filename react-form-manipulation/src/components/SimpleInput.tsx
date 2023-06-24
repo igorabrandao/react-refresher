@@ -1,19 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 const SimpleInput: React.FC = (props) => {
-  // Ref can be used to get the value of an input field on submit
-  const inputNameRef = useRef<HTMLInputElement>(null);
-
   // State can be used to get the value of an input field on change
   const [enteredName, setEnteredName] = useState<string>("");
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState<boolean>(false);
   const [enteredNameTouched, setEnteredNameTouched] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (enteredNameIsValid) {
-      console.log("Name input is valid!");
-    }
-  }, [enteredNameIsValid]);
+  const enteredNameIsValid = enteredName.trim().length !== 0;
+  const nameInputIsInvalid: boolean = !enteredNameIsValid && enteredNameTouched;
+
+  const nameInputClasses: string = nameInputIsInvalid
+    ? "form-control invalid"
+    : "form-control";
 
   const nameInputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -23,11 +20,6 @@ const SimpleInput: React.FC = (props) => {
 
   const nameInputBlurHandler = () => {
     setEnteredNameTouched(true);
-
-    if (enteredName.trim().length === 0) {
-      setEnteredNameIsValid(false);
-      return;
-    }
   };
 
   const formSubmissionHandler = (event: React.FormEvent) => {
@@ -35,32 +27,22 @@ const SimpleInput: React.FC = (props) => {
 
     setEnteredNameTouched(true);
 
-    if (enteredName.trim().length === 0) {
-      setEnteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    setEnteredNameIsValid(true);
-
     console.log(enteredName);
-    const enteredValue = inputNameRef.current!.value;
-    console.log(enteredValue);
 
     // Reset the input field
     setEnteredName("");
+    setEnteredNameTouched(false);
   };
-
-  const nameInputIsInvalid: boolean = !enteredNameIsValid && enteredNameTouched;
-  const nameInputClasses: string = nameInputIsInvalid ? "form-control invalid" : "form-control";
 
   return (
     <form onSubmit={formSubmissionHandler}>
-      <div
-        className={nameInputClasses}
-      >
+      <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={inputNameRef}
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
