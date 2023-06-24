@@ -52,6 +52,7 @@ const BasicForm: React.FC = (props) => {
       return;
     }
 
+    console.log("Submitted!");
     console.log(enteredFirstName, enteredLastName, enteredEmail);
 
     resetFirstNameInput();
