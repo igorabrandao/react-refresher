@@ -8,9 +8,15 @@ const SimpleInput: React.FC = (props) => {
   const enteredNameIsValid = enteredName.trim().length !== 0;
   const nameInputIsInvalid: boolean = !enteredNameIsValid && enteredNameTouched;
 
+  let formIsValid = false;
+
   const nameInputClasses: string = nameInputIsInvalid
     ? "form-control invalid"
     : "form-control";
+
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  }
 
   const nameInputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -54,7 +60,7 @@ const SimpleInput: React.FC = (props) => {
         )}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
