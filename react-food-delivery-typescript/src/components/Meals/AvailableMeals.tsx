@@ -1,17 +1,20 @@
 import { useEffect, useState, useCallback } from "react";
 
-import Card from "../UI/Card";
-import MealItem from "./MealItem/MealItem";
 import { MealType } from "../../types/types";
+import Card from "../UI/Card";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import MealItem from "./MealItem/MealItem";
 import MealsService from "../../services/meals-service";
 import styles from "./AvailableMeals.module.css";
 
 const AvailableMeals: React.FC = () => {
   const [mealsList, setMealsList] = useState<MealType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const mealsService = MealsService();
-  
+
   // Function to load the meals from Firebase
   const loadMeals = useCallback(async () => {
+    setIsLoading(true);
     try {
       const data = await mealsService.getAllMeals();
 
@@ -34,6 +37,9 @@ const AvailableMeals: React.FC = () => {
       setMealsList(loadedMeals);
     } catch (error) {
       console.error(error);
+    } finally {
+      console.log("Meals loaded successfully!");
+      setIsLoading(false);
     }
   }, []);
 
@@ -46,7 +52,8 @@ const AvailableMeals: React.FC = () => {
   return (
     <section className={styles.meals}>
       <Card>
-        {mealsList.length > 0 &&
+        {isLoading && <LoadingSpinner />}
+        {mealsList.length > 0 && !isLoading &&
           mealsList.map((meal) => {
             return (
               <MealItem
@@ -59,7 +66,7 @@ const AvailableMeals: React.FC = () => {
               />
             );
           })}
-        {mealsList.length === 0 && (
+        {mealsList.length === 0 && !isLoading && (
           <p className={styles["not-found"]}>No meals found.</p>
         )}
       </Card>
