@@ -1,6 +1,5 @@
 import axios from "axios";
 
-import DUMMY_MEALS from "../mock/dummy-meals";
 import { MealType } from "../types/types";
 
 // Firebase API URL
@@ -16,14 +15,14 @@ const MealsService = () => {
     },
   });
 
-  const populateMeals = () => {
-    DUMMY_MEALS.forEach((meal) => {
+  const populateMeals = (data: MealType[]) => {
+    data.forEach((meal) => {
       axiosInstance.post("/meals.json", meal);
     });
   };
 
-  const getAllMeals = () => {
-    return axiosInstance.get("/meals.json");
+  const getAllMeals = async (): Promise<MealType[]> => {
+    return (await axiosInstance.get("/meals.json")).data;
   };
 
   const getMealById = (id: string) => {
