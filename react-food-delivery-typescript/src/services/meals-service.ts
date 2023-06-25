@@ -15,30 +15,51 @@ const MealsService = () => {
     },
   });
 
-  const populateMeals = (data: MealType[]) => {
-    data.forEach((meal) => {
-      axiosInstance.post("/meals.json", meal);
-    });
+  const populateMeals = async (data: MealType[]): Promise<boolean> => {
+    try {
+      data.forEach((meal) => {
+        axiosInstance.post("/meals.json", meal);
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
   const getAllMeals = async (): Promise<MealType[]> => {
     return (await axiosInstance.get("/meals.json")).data;
   };
 
-  const getMealById = (id: string) => {
-    return axiosInstance.get(`/meals.json/${id}`);
+  const getMealById = async (id: string): Promise<MealType> => {
+    return (await axiosInstance.get(`/meals.json/${id}`)).data;
   };
 
-  const createMeal = (data: MealType) => {
-    return axiosInstance.post("/meals.json", data);
+  const createMeal = async (data: MealType): Promise<boolean> => {
+    try {
+      await axiosInstance.post("/meals.json", data);
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
-  const updateMeal = (id: string, data: MealType) => {
-    return axiosInstance.put(`/meals.json/${id}`, data);
+  const updateMeal = async (id: string, data: MealType): Promise<boolean> => {
+    try {
+      await axiosInstance.put(`/meals.json/${id}`, data);
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
-  const removeMeal = (id: string) => {
-    return axiosInstance.delete(`/meals.json/${id}`);
+  const removeMeal = async (id: string): Promise<boolean> => {
+    try {
+      await axiosInstance.delete(`/meals.json/${id}`);
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
   return {

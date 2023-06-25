@@ -9,29 +9,44 @@ import styles from "./AvailableMeals.module.css";
 const AvailableMeals: React.FC = () => {
   const [mealsList, setMealsList] = useState<MealType[]>([]);
   const mealsService = MealsService();
-
+  
   // Function to load the meals from Firebase
   const loadMeals = useCallback(async () => {
     try {
-      const meals = await mealsService.getAllMeals();
+      const data = await mealsService.getAllMeals();
 
-      if (meals) {
-        setMealsList(meals);
+      if (!data) {
+        throw new Error("Something went wrong!");
       }
+
+      const loadedMeals: MealType[] = [];
+
+      for (const key in data) {
+        loadedMeals.push({
+          id: key,
+          name: data[key].name,
+          description: data[key].description,
+          price: data[key].price,
+          amount: data[key].amount,
+        });
+      }
+
+      setMealsList(loadedMeals);
     } catch (error) {
       console.error(error);
     }
-  }, [mealsService]);
+  }, []);
 
   // Load the meals when the component is mounted
   useEffect(() => {
+    console.log("Loading meals...");
     loadMeals();
   }, [loadMeals]);
 
   return (
     <section className={styles.meals}>
       <Card>
-        {mealsList &&
+        {mealsList.length > 0 &&
           mealsList.map((meal) => {
             return (
               <MealItem
