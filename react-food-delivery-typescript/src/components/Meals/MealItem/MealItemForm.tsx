@@ -3,16 +3,18 @@ import { useRef, useState } from "react";
 import Input from "../../UI/Input";
 import styles from "./MealItemForm.module.css";
 
-const MealItemForm = (props) => {
-  const [amountIsValid, setAmountIsValid] = useState(true);
-  const amountInputRef = useRef();
+const MealItemForm: React.FC = (props) => {
+  const [amountIsValid, setAmountIsValid] = useState<boolean>(true);
+  const amountInputRef = useRef<HTMLInputElement>(null);
 
-  const submitHandler = (event) => {
+  const submitHandler = (event: React.FormEvent) => {
     // Prevent the default action of the form
     event.preventDefault();
 
-    const enteredAmount = amountInputRef.current.value;
-    const enteredAmountNumber = +enteredAmount;
+    const enteredAmount = amountInputRef.current?.value
+      ? amountInputRef.current.value
+      : "";
+    const enteredAmountNumber = enteredAmount ? +enteredAmount : 0;
 
     if (
       enteredAmount.trim().length === 0 ||

@@ -1,21 +1,33 @@
 import { useReducer } from "react";
 
 import CartContext from "./cart-context";
+import { Props, MealType, CartType } from "../types/types";
 
-const defaultCartState = {
+enum ActionTypeEnum {
+  ADD = "ADD",
+  REMOVE = "REMOVE",
+}
+
+type ActionType = {
+  type: string;
+  item?: MealType;
+  id?: string;
+};
+
+const defaultCartState: CartType = {
   items: [],
   totalAmount: 0,
 };
 
-const cartReducer = (state, action) => {
-  if (action.type === "ADD") {
+const cartReducer = (state: CartType, action: ActionType) => {
+  if (action.type === ActionTypeEnum.ADD) {
     // Calculate the new total amount
     const updatedTotalAmount =
-      state.totalAmount + action.item.price * action.item.amount;
+      state.totalAmount + action.item!.price * action.item!.amount;
 
     // Check if the item already exists in the cart
     const existingCartItemIndex = state.items.findIndex(
-      (item) => item.id === action.item.id
+      (item) => item.id === action.item!.id
     );
     const existingCartItem = state.items[existingCartItemIndex];
     let updatedItems;
@@ -24,12 +36,12 @@ const cartReducer = (state, action) => {
     if (existingCartItem) {
       const updatedItem = {
         ...existingCartItem,
-        amount: existingCartItem.amount + action.item.amount,
+        amount: existingCartItem.amount + action.item!.amount,
       };
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
     } else {
-      updatedItems = state.items.concat(action.item);
+      updatedItems = state.items.concat(action.item!);
     }
 
     // Return the updated state
@@ -39,7 +51,7 @@ const cartReducer = (state, action) => {
     };
   }
 
-  if (action.type === "REMOVE") {
+  if (action.type === ActionTypeEnum.REMOVE) {
     // Check if the item already exists in the cart
     const existingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.id
@@ -65,21 +77,25 @@ const cartReducer = (state, action) => {
   return defaultCartState;
 };
 
-const CartProvider = (props) => {
+/*
+ * Note that the PropsWithChildren type is omitted from the props type of a FunctionalComponent after React 18,
+ * this means that you have to include the children prop yourself:
+ */
+const CartProvider: React.FC<Props> = ({ children }) => {
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
     defaultCartState
   );
 
-  const addItemToCartHandler = (item) => {
-    dispatchCartAction({ type: "ADD", item: item });
+  const addItemToCartHandler = (item: MealType) => {
+    dispatchCartAction({ type: ActionTypeEnum.ADD, item: item });
   };
 
-  const removeItemFromCartHandler = (id) => {
-    dispatchCartAction({ type: "REMOVE", id: id });
+  const removeItemFromCartHandler = (id: string) => {
+    dispatchCartAction({ type: ActionTypeEnum.REMOVE, id: id });
   };
 
-  const cartContext = {
+  const contextValue: CartType = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
@@ -87,9 +103,7 @@ const CartProvider = (props) => {
   };
 
   return (
-    <CartContext.Provider value={cartContext}>
-      {props.children}
-    </CartContext.Provider>
+    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   );
 };
 

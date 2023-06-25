@@ -1,6 +1,8 @@
 import React from "react";
 
-const CartContext = React.createContext({
+import { CartType } from "../types/types";
+
+const CartContext = React.createContext<CartType>({
   items: [],
   totalAmount: 0,
   addItem: (item) => {},
