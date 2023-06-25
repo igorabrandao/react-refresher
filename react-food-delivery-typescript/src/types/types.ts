@@ -23,3 +23,10 @@ export type CartItemType = {
   onRemove: (id: string) => void;
   onAdd: (item: MealType) => void;
 };
+
+export type OrderType = {
+  id: string;
+  items: MealType[];
+  totalAmount: number;
+  timestamp: Date;
+};
