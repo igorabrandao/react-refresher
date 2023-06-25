@@ -4,18 +4,23 @@ import CardtContext from "../../store/cart-context";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
 import styles from "./Cart.module.css";
+import { MealType } from "../../types/types";
 
-const Cart = (props) => {
+type CartModalType = {
+  onClose: () => void;
+};
+
+const Cart: React.FC<CartModalType> = (props) => {
   const cartCtx = useContext(CardtContext);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
-  const cartItemRemoveHandler = (id) => {
-    cartCtx.removeItem(id);
+  const cartItemRemoveHandler = (id: string) => {
+    cartCtx.removeItem!(id);
   };
 
-  const cartItemAddHandler = (item) => {
-    cartCtx.addItem({ ...item, amount: 1 });
+  const cartItemAddHandler = (item: MealType) => {
+    cartCtx.addItem!({ ...item, amount: 1 });
   };
 
   const cartItems = (
@@ -23,12 +28,9 @@ const Cart = (props) => {
       {cartCtx.items.map((item) => {
         return (
           <CartItem
-            key={item.id}
-            name={item.name}
-            amount={item.amount}
-            price={item.price}
-            onRemove={cartItemRemoveHandler.bind(null, item.id)}
-            onAdd={cartItemAddHandler.bind(null, item)}
+            item={item}
+            onRemove={cartItemRemoveHandler}
+            onAdd={cartItemAddHandler}
           />
         );
       })}

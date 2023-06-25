@@ -4,7 +4,11 @@ import CartIcon from "../Cart/CartIcon";
 import CartContext from "../../store/cart-context";
 import styles from "./HeaderCartButton.module.css";
 
-const HeaderCartButton = (props) => {
+type Props = {
+  onClick: () => void;
+};
+
+const HeaderCartButton: React.FC<Props> = (props) => {
   // Access the cart context
   const cartCtx = useContext(CartContext);
   const [btnIsHighlighted, setBtnIsHighlighted] = useState(false);

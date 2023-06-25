@@ -4,7 +4,11 @@ import HeaderCartButton from "./HeaderCartButton";
 import styles from "./Header.module.css";
 import mealsImage from "../../assets/meals.jpg";
 
-const Header = (props) => {
+type Props = {
+  onShowCart: () => void;
+};
+
+const Header: React.FC<Props> = (props) => {
   return (
     <Fragment>
       <header className={styles.header}>

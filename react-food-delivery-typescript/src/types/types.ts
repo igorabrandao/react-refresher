@@ -17,3 +17,9 @@ export type CartType = {
   addItem?: (item: MealType) => void;
   removeItem?: (id: string) => void;
 };
+
+export type CartItemType = {
+  item: MealType;
+  onRemove: (id: string) => void;
+  onAdd: (item: MealType) => void;
+};
