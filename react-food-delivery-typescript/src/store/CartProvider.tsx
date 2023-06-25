@@ -6,6 +6,7 @@ import { Props, MealType, CartType } from "../types/types";
 enum ActionTypeEnum {
   ADD = "ADD",
   REMOVE = "REMOVE",
+  CLEAR = "CLEAR",
 }
 
 type ActionType = {
@@ -74,6 +75,10 @@ const cartReducer = (state: CartType, action: ActionType) => {
     };
   }
 
+  if (action.type === ActionTypeEnum.CLEAR) {
+    return defaultCartState;
+  }
+
   return defaultCartState;
 };
 
@@ -95,11 +100,16 @@ const CartProvider: React.FC<Props> = ({ children }) => {
     dispatchCartAction({ type: ActionTypeEnum.REMOVE, id: id });
   };
 
+  const clearCartHandler = () => {
+    dispatchCartAction({ type: ActionTypeEnum.CLEAR });
+  };
+
   const contextValue: CartType = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler,
   };
 
   return (

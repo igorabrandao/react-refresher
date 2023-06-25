@@ -16,6 +16,7 @@ export type CartType = {
   totalAmount: number;
   addItem?: (item: MealType) => void;
   removeItem?: (id: string) => void;
+  clearCart?: () => void;
 };
 
 export type CartItemType = {

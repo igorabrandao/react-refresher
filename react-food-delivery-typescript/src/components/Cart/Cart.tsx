@@ -1,19 +1,24 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
-import CardtContext from "../../store/cart-context";
+import { MealType, OrderType } from "../../types/types";
+import CartContext from "../../store/cart-context";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
+import OrderService from "../../services/order-service";
 import styles from "./Cart.module.css";
-import { MealType } from "../../types/types";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 type CartModalType = {
   onClose: () => void;
 };
 
 const Cart: React.FC<CartModalType> = (props) => {
-  const cartCtx = useContext(CardtContext);
+  const cartCtx = useContext(CartContext);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const orderService = OrderService();
 
   const cartItemRemoveHandler = (id: string) => {
     cartCtx.removeItem!(id);
@@ -21,6 +26,36 @@ const Cart: React.FC<CartModalType> = (props) => {
 
   const cartItemAddHandler = (item: MealType) => {
     cartCtx.addItem!({ ...item, amount: 1 });
+  };
+
+  const orderHandler = async () => {
+    if (window.confirm("Do you want to place your order?")) {
+      setIsLoading(true);
+
+      // Prepare the order
+      const newOrder: OrderType = {
+        id: Math.random().toString(),
+        items: cartCtx.items,
+        totalAmount: cartCtx.totalAmount,
+        timestamp: new Date(),
+      };
+
+      try {
+        const result = await orderService.createOrder(newOrder);
+
+        if (!result) {
+          throw new Error("Something went wrong!");
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        console.log("Order placed successfully!");
+        window.alert("Order placed successfully!");
+        cartCtx.clearCart!();
+        setIsLoading(false);
+        props.onClose();
+      }
+    }
   };
 
   const cartItems = (
@@ -40,17 +75,26 @@ const Cart: React.FC<CartModalType> = (props) => {
 
   return (
     <Modal onClose={props.onClose}>
-      {cartItems}
-      <div className={styles.total}>
-        <span>Total Amount</span>
-        <span>{totalAmount}</span>
-      </div>
-      <div className={styles.actions}>
-        <button className={styles["button--alt"]} onClick={props.onClose}>
-          Close
-        </button>
-        {hasItems && <button className={styles.button}>Order</button>}
-      </div>
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && (
+        <div>
+          {cartItems}
+          <div className={styles.total}>
+            <span>Total Amount</span>
+            <span>{totalAmount}</span>
+          </div>
+          <div className={styles.actions}>
+            <button className={styles["button--alt"]} onClick={props.onClose}>
+              Close
+            </button>
+            {hasItems && (
+              <button className={styles.button} onClick={orderHandler}>
+                Order
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </Modal>
   );
 };
