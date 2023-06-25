@@ -25,6 +25,7 @@ const ModalOverlay: React.FC<Props> = (props) => {
   );
 };
 
+// This is the div with id="overlays" in public/index.html
 const portalElement = document.getElementById("overlays");
 
 const Modal: React.FC<ModalType> = (props) => {

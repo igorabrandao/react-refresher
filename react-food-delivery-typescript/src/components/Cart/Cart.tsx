@@ -28,6 +28,7 @@ const Cart: React.FC<CartModalType> = (props) => {
       {cartCtx.items.map((item) => {
         return (
           <CartItem
+            key={item.id}
             item={item}
             onRemove={cartItemRemoveHandler}
             onAdd={cartItemAddHandler}

@@ -5,7 +5,7 @@ const CartItem: React.FC<CartItemType> = (props) => {
   const price = `$${props.item.price.toFixed(2)}`;
 
   return (
-    <li className={styles["cart-item"]} key={props.item.id}>
+    <li className={styles["cart-item"]}>
       <div>
         <h2>{props.item.name}</h2>
         <div className={styles.summary}>
