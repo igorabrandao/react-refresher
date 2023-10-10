@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 
 import CartContext from "../../store/cart-context";
 import OrderService from "../../services/order-service";
@@ -12,10 +12,18 @@ type CheckoutType = {
   onHideLoading: () => void;
 };
 
+const isEmpty = (value: string) => value.trim() === "";
 const isExpectedSize = (value: string, expectedSize: number) =>
   value.trim().length === expectedSize;
 
 const Checkout: React.FC<CheckoutType> = (props) => {
+  const [formInputsValidity, setFormInputsValidity] = useState({
+    name: true,
+    street: true,
+    postal: true,
+    city: true,
+  });
+
   const cartCtx = useContext(CartContext);
   const orderService = OrderService();
 
@@ -33,6 +41,13 @@ const Checkout: React.FC<CheckoutType> = (props) => {
       const enteredStreet = streetInputRef.current!.value;
       const enteredPostal = postalInputRef.current!.value;
       const enteredCity = cityInputRef.current!.value;
+
+      setFormInputsValidity({
+        name: !isEmpty(enteredName),
+        street: !isEmpty(enteredStreet),
+        postal: isExpectedSize(enteredPostal, 8),
+        city: !isEmpty(enteredCity),
+      });
 
       if (!enteredName || !enteredStreet || !enteredPostal || !enteredCity) {
         window.alert("Please fill the order data!");
@@ -57,7 +72,7 @@ const Checkout: React.FC<CheckoutType> = (props) => {
         city: enteredCity,
         timestamp: new Date(),
       };
-      
+
       try {
         const result = await orderService.createOrder(newOrder);
         if (!result) {
@@ -77,21 +92,25 @@ const Checkout: React.FC<CheckoutType> = (props) => {
 
   return (
     <form className={styles.form} onSubmit={confirmHandler}>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${formInputsValidity.name ? '' : styles.invalid}`}>
         <label htmlFor="name">Your name</label>
         <input type="text" id="name" ref={nameInputRef}></input>
+        {!formInputsValidity.name && <p>Please enter a valid name!</p>}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${formInputsValidity.street ? '' : styles.invalid}`}>
         <label htmlFor="street">Street</label>
         <input type="text" id="street" ref={streetInputRef}></input>
+        {!formInputsValidity.street && <p>Please enter a valid street!</p>}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${formInputsValidity.postal ? '' : styles.invalid}`}>
         <label htmlFor="postal">Postal Code</label>
         <input type="text" id="postal" ref={postalInputRef}></input>
+        {!formInputsValidity.postal && <p>Please enter a valid postal code!</p>}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${formInputsValidity.city ? '' : styles.invalid}`}>
         <label htmlFor="city">City</label>
         <input type="text" id="city" ref={cityInputRef}></input>
+        {!formInputsValidity.city && <p>Please enter a valid city!</p>}
       </div>
       <div className={styles.actions}>
         <button type="button" onClick={props.onCancel}>

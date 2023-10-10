@@ -59,8 +59,14 @@
   .invalid label {
     color: #ca3e51;
   }
+
+  .invalid p {
+    color: #ca3e51;
+    margin-top: 0rem;
+  }
   
   .invalid input {
     border-color: #aa0b20;
     background-color: #ffeff1;
+    color: #ca3e51;
   }
