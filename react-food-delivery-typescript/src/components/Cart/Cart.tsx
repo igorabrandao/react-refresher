@@ -7,12 +7,15 @@ import CartItem from "./CartItem";
 import OrderService from "../../services/order-service";
 import styles from "./Cart.module.css";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import Checkout from "./Checkout";
 
 type CartModalType = {
   onClose: () => void;
 };
 
 const Cart: React.FC<CartModalType> = (props) => {
+  const [isCheckout, setIsCheckout] = useState<boolean>(false);
+
   const cartCtx = useContext(CartContext);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -29,33 +32,7 @@ const Cart: React.FC<CartModalType> = (props) => {
   };
 
   const orderHandler = async () => {
-    if (window.confirm("Do you want to place your order?")) {
-      setIsLoading(true);
-
-      // Prepare the order
-      const newOrder: OrderType = {
-        id: Math.random().toString(),
-        items: cartCtx.items,
-        totalAmount: cartCtx.totalAmount,
-        timestamp: new Date(),
-      };
-
-      try {
-        const result = await orderService.createOrder(newOrder);
-
-        if (!result) {
-          throw new Error("Something went wrong!");
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        console.log("Order placed successfully!");
-        window.alert("Order placed successfully!");
-        cartCtx.clearCart!();
-        setIsLoading(false);
-        props.onClose();
-      }
-    }
+    setIsCheckout(true);
   };
 
   const cartItems = (
@@ -83,7 +60,8 @@ const Cart: React.FC<CartModalType> = (props) => {
             <span>Total Amount</span>
             <span>{totalAmount}</span>
           </div>
-          <div className={styles.actions}>
+          {isCheckout && <Checkout onCancel={props.onClose} />}
+          {!isCheckout && <div className={styles.actions}>
             <button className={styles["button--alt"]} onClick={props.onClose}>
               Close
             </button>
@@ -92,7 +70,7 @@ const Cart: React.FC<CartModalType> = (props) => {
                 Order
               </button>
             )}
-          </div>
+          </div>}
         </div>
       )}
     </Modal>

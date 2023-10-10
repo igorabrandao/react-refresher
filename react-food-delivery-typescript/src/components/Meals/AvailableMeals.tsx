@@ -53,7 +53,8 @@ const AvailableMeals: React.FC = () => {
     <section className={styles.meals}>
       <Card>
         {isLoading && <LoadingSpinner />}
-        {mealsList.length > 0 && !isLoading &&
+        {mealsList.length > 0 &&
+          !isLoading &&
           mealsList.map((meal) => {
             return (
               <MealItem
