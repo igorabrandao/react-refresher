@@ -12,7 +12,8 @@ type CheckoutType = {
   onHideLoading: () => void;
 };
 
-const isExpectedSize = (value: string, expectedSize: number) => value.trim().length === expectedSize;
+const isExpectedSize = (value: string, expectedSize: number) =>
+  value.trim().length === expectedSize;
 
 const Checkout: React.FC<CheckoutType> = (props) => {
   const cartCtx = useContext(CartContext);
@@ -23,7 +24,7 @@ const Checkout: React.FC<CheckoutType> = (props) => {
   const postalInputRef = useRef<HTMLInputElement>(null);
   const cityInputRef = useRef<HTMLInputElement>(null);
 
-  const confirmHandler = (event: React.FormEvent) => {
+  const confirmHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (window.confirm("Do you want to place your order?")) {
@@ -43,28 +44,34 @@ const Checkout: React.FC<CheckoutType> = (props) => {
         return;
       }
 
+      // Prepare the order
       props.onDisplayLoading();
-      //   // Prepare the order
-      //   const newOrder: OrderType = {
-      //     id: Math.random().toString(),
-      //     items: cartCtx.items,
-      //     totalAmount: cartCtx.totalAmount,
-      //     timestamp: new Date(),
-      //   };
-      //   try {
-      //     const result = await orderService.createOrder(newOrder);
-      //     if (!result) {
-      //       throw new Error("Something went wrong!");
-      //     }
-      //   } catch (error) {
-      //     console.error(error);
-      //   } finally {
-      //     console.log("Order placed successfully!");
-      //     window.alert("Order placed successfully!");
-      //     cartCtx.clearCart!();
-      //     setIsLoading(false);
-      //     props.onClose();
-      //   }
+
+      const newOrder: OrderType = {
+        id: Math.random().toString(),
+        items: cartCtx.items,
+        totalAmount: cartCtx.totalAmount,
+        name: enteredName,
+        street: enteredStreet,
+        postal: enteredPostal,
+        city: enteredCity,
+        timestamp: new Date(),
+      };
+      
+      try {
+        const result = await orderService.createOrder(newOrder);
+        if (!result) {
+          throw new Error("Something went wrong!");
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        console.log("Order placed successfully!");
+        window.alert("Order placed successfully!");
+        cartCtx.clearCart!();
+        props.onHideLoading();
+        props.onCancel();
+      }
     }
   };
 

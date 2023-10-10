@@ -30,4 +30,8 @@ export type OrderType = {
   items: MealType[];
   totalAmount: number;
   timestamp: Date;
+  name?: string;
+  street?: string;
+  postal?: string;
+  city?: string;
 };
