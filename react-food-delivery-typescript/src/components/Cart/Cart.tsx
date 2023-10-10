@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
 
-import { MealType, OrderType } from "../../types/types";
+import { MealType } from "../../types/types";
 import CartContext from "../../store/cart-context";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
-import OrderService from "../../services/order-service";
 import styles from "./Cart.module.css";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import Checkout from "./Checkout";
@@ -21,7 +20,6 @@ const Cart: React.FC<CartModalType> = (props) => {
   const hasItems = cartCtx.items.length > 0;
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const orderService = OrderService();
 
   const cartItemRemoveHandler = (id: string) => {
     cartCtx.removeItem!(id);
@@ -61,16 +59,18 @@ const Cart: React.FC<CartModalType> = (props) => {
             <span>{totalAmount}</span>
           </div>
           {isCheckout && <Checkout onCancel={props.onClose} />}
-          {!isCheckout && <div className={styles.actions}>
-            <button className={styles["button--alt"]} onClick={props.onClose}>
-              Close
-            </button>
-            {hasItems && (
-              <button className={styles.button} onClick={orderHandler}>
-                Order
+          {!isCheckout && (
+            <div className={styles.actions}>
+              <button className={styles["button--alt"]} onClick={props.onClose}>
+                Close
               </button>
-            )}
-          </div>}
+              {hasItems && (
+                <button className={styles.button} onClick={orderHandler}>
+                  Order
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </Modal>

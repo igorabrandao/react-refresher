@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 import CartContext from "../../store/cart-context";
 import OrderService from "../../services/order-service";
+import { MealType, OrderType } from "../../types/types";
 
 import styles from "./Checkout.module.css";
 
@@ -43,7 +44,7 @@ const Checkout: React.FC<CheckoutType> = (props) => {
   };
 
   return (
-    <form onSubmit={confirmHandler}>
+    <form className={styles.form} onSubmit={confirmHandler}>
       <div className={styles.control}>
         <label htmlFor="name">Your name</label>
         <input type="text" id="name"></input>
@@ -60,12 +61,12 @@ const Checkout: React.FC<CheckoutType> = (props) => {
         <label htmlFor="city">City</label>
         <input type="text" id="city"></input>
       </div>
-      <button type="button" onClick={props.onCancel}>
-        Cancel
-      </button>
-      <button className={styles.actions} onClick={() => {}}>
-        Confirm
-      </button>
+      <div className={styles.actions}>
+        <button type="button" onClick={props.onCancel}>
+          Cancel
+        </button>
+        <button className={styles.submit}>Confirm</button>
+      </div>
     </form>
   );
 };
