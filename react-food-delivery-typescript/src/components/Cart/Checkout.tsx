@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import CartContext from "../../store/cart-context";
 import OrderService from "../../services/order-service";
@@ -8,17 +8,42 @@ import styles from "./Checkout.module.css";
 
 type CheckoutType = {
   onCancel: () => void;
+  onDisplayLoading: () => void;
+  onHideLoading: () => void;
 };
+
+const isExpectedSize = (value: string, expectedSize: number) => value.trim().length === expectedSize;
 
 const Checkout: React.FC<CheckoutType> = (props) => {
   const cartCtx = useContext(CartContext);
   const orderService = OrderService();
 
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const streetInputRef = useRef<HTMLInputElement>(null);
+  const postalInputRef = useRef<HTMLInputElement>(null);
+  const cityInputRef = useRef<HTMLInputElement>(null);
+
   const confirmHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (window.confirm("Do you want to place your order?")) {
-      //   setIsLoading(true);
+      // Get the order data
+      const enteredName = nameInputRef.current!.value;
+      const enteredStreet = streetInputRef.current!.value;
+      const enteredPostal = postalInputRef.current!.value;
+      const enteredCity = cityInputRef.current!.value;
+
+      if (!enteredName || !enteredStreet || !enteredPostal || !enteredCity) {
+        window.alert("Please fill the order data!");
+        return;
+      }
+
+      if (!isExpectedSize(enteredPostal, 8)) {
+        window.alert("Please enter a valid postal code!");
+        return;
+      }
+
+      props.onDisplayLoading();
       //   // Prepare the order
       //   const newOrder: OrderType = {
       //     id: Math.random().toString(),
@@ -47,19 +72,19 @@ const Checkout: React.FC<CheckoutType> = (props) => {
     <form className={styles.form} onSubmit={confirmHandler}>
       <div className={styles.control}>
         <label htmlFor="name">Your name</label>
-        <input type="text" id="name"></input>
+        <input type="text" id="name" ref={nameInputRef}></input>
       </div>
       <div className={styles.control}>
         <label htmlFor="street">Street</label>
-        <input type="text" id="street"></input>
+        <input type="text" id="street" ref={streetInputRef}></input>
       </div>
       <div className={styles.control}>
         <label htmlFor="postal">Postal Code</label>
-        <input type="text" id="postal"></input>
+        <input type="text" id="postal" ref={postalInputRef}></input>
       </div>
       <div className={styles.control}>
         <label htmlFor="city">City</label>
-        <input type="text" id="city"></input>
+        <input type="text" id="city" ref={cityInputRef}></input>
       </div>
       <div className={styles.actions}>
         <button type="button" onClick={props.onCancel}>

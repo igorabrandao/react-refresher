@@ -21,6 +21,14 @@ const Cart: React.FC<CartModalType> = (props) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const displayLoading = () => {
+    setIsLoading(true);
+  };
+
+  const hideLoading = () => {
+    setIsLoading(false);
+  };
+
   const cartItemRemoveHandler = (id: string) => {
     cartCtx.removeItem!(id);
   };
@@ -58,7 +66,13 @@ const Cart: React.FC<CartModalType> = (props) => {
             <span>Total Amount</span>
             <span>{totalAmount}</span>
           </div>
-          {isCheckout && <Checkout onCancel={props.onClose} />}
+          {isCheckout && (
+            <Checkout
+              onCancel={props.onClose}
+              onDisplayLoading={displayLoading}
+              onHideLoading={hideLoading}
+            />
+          )}
           {!isCheckout && (
             <div className={styles.actions}>
               <button className={styles["button--alt"]} onClick={props.onClose}>
