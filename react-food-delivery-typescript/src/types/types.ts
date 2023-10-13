@@ -35,3 +35,10 @@ export type OrderType = {
   postal?: string;
   city?: string;
 };
+
+export type CheckoutDataType = {
+  enteredName: string;
+  enteredStreet: string;
+  enteredPostal: string;
+  enteredCity: string;
+};

@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 
-import { MealType } from "../../types/types";
+import { MealType, OrderType, CheckoutDataType } from "../../types/types";
 import CartContext from "../../store/cart-context";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
 import styles from "./Cart.module.css";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import Checkout from "./Checkout";
+import OrderService from "../../services/order-service";
 
 type CartModalType = {
   onClose: () => void;
@@ -15,6 +16,7 @@ type CartModalType = {
 const Cart: React.FC<CartModalType> = (props) => {
   const [isCheckout, setIsCheckout] = useState<boolean>(false);
 
+  const orderService = OrderService();
   const cartCtx = useContext(CartContext);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -39,6 +41,37 @@ const Cart: React.FC<CartModalType> = (props) => {
 
   const orderHandler = async () => {
     setIsCheckout(true);
+  };
+
+  const submitOrderHandler = async (checkoutData: CheckoutDataType) => {
+    // Prepare the order
+    setIsLoading(true);
+
+    const newOrder: OrderType = {
+      id: Math.random().toString(),
+      items: cartCtx.items,
+      totalAmount: cartCtx.totalAmount,
+      name: checkoutData.enteredName,
+      street: checkoutData.enteredStreet,
+      postal: checkoutData.enteredPostal,
+      city: checkoutData.enteredCity,
+      timestamp: new Date(),
+    };
+
+    try {
+      const result = await orderService.createOrder(newOrder);
+      if (!result) {
+        throw new Error("Something went wrong!");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      console.log("Order placed successfully!");
+      window.alert("Order placed successfully!");
+      cartCtx.clearCart!();
+      setIsLoading(false);
+      props.onClose();
+    }
   };
 
   const cartItems = (
@@ -67,11 +100,7 @@ const Cart: React.FC<CartModalType> = (props) => {
             <span>{totalAmount}</span>
           </div>
           {isCheckout && (
-            <Checkout
-              onCancel={props.onClose}
-              onDisplayLoading={displayLoading}
-              onHideLoading={hideLoading}
-            />
+            <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
           )}
           {!isCheckout && (
             <div className={styles.actions}>
