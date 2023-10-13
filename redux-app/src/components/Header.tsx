@@ -1,4 +1,4 @@
-import classes from './Header.module.css';
+import classes from "./Header.module.css";
 
 const Header: React.FC = () => {
   return (
@@ -7,10 +7,10 @@ const Header: React.FC = () => {
       <nav>
         <ul>
           <li>
-            <a href='/'>My Products</a>
+            <a href="/">My Products</a>
           </li>
           <li>
-            <a href='/'>My Sales</a>
+            <a href="/">My Sales</a>
           </li>
           <li>
             <button>Logout</button>

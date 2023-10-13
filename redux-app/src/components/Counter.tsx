@@ -1,4 +1,4 @@
-import classes from './Counter.module.css';
+import classes from "./Counter.module.css";
 
 const Counter: React.FC = () => {
   const toggleCounterHandler = () => {};
