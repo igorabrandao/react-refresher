@@ -23,14 +23,6 @@ const Cart: React.FC<CartModalType> = (props) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const displayLoading = () => {
-    setIsLoading(true);
-  };
-
-  const hideLoading = () => {
-    setIsLoading(false);
-  };
-
   const cartItemRemoveHandler = (id: string) => {
     cartCtx.removeItem!(id);
   };
