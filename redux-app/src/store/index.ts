@@ -1,4 +1,4 @@
-import redux from "redux";
+import { createStore, Reducer } from "redux";
 
 enum ActionTypeEnum {
   INCREMENT = "INCREMENT",
@@ -9,7 +9,7 @@ type ActionType = {
   type: string;
 };
 
-const counterReducer: redux.Reducer = (
+const counterReducer: Reducer = (
   state = { counter: 0 },
   action: ActionType
 ) => {
@@ -26,19 +26,6 @@ const counterReducer: redux.Reducer = (
 };
 
 // Create a Redux store holding the state of the app
-const store = redux.createStore(counterReducer);
-
-// Subscribers
-const counterSubscriber = () => {
-  const latestState = store.getState();
-  console.log(latestState);
-};
-
-// Subscribing to the store
-store.subscribe(counterSubscriber);
-
-// Dispatching Actions
-store.dispatch({ type: ActionTypeEnum.INCREMENT });
-store.dispatch({ type: ActionTypeEnum.DECREMENT });
+const store = createStore(counterReducer);
 
 export default store;
