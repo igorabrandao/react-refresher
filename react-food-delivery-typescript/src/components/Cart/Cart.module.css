@@ -19,6 +19,13 @@
     font-size: 1.5rem;
     margin: 1rem 0;
   }
+
+  .message {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.0rem;
+    margin: 1rem 0;
+  }
   
   .actions {
     text-align: right;
